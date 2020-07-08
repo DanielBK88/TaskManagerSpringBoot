@@ -13,6 +13,7 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * @author Denis Volnenko
@@ -35,9 +36,11 @@ public final class Task implements Serializable {
     private Project project;
 
     @Column(name = "DATE_BEGIN")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate dateBegin;
 
     @Column(name = "DATE_END")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate dateEnd;
 
     public void test() {

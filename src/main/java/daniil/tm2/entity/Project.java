@@ -2,6 +2,8 @@ package daniil.tm2.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
@@ -19,6 +21,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * @author Denis Volnenko
@@ -41,6 +44,7 @@ public final class Project implements Serializable {
     private Domain domain;
 
     @Column(name = "DATE_BEGIN")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate dateBegin;
 
     @Column(name = "DATE_END")
@@ -49,8 +53,8 @@ public final class Project implements Serializable {
     @Column(name = "DATE_CREATED")
     private LocalDate created = LocalDate.now();
 
-    //@JacksonXmlElementWrapper(localName = "tasks")
-    //@JacksonXmlProperty(localName = "task")
+    @JacksonXmlElementWrapper(localName = "tasks")
+    @JacksonXmlProperty(localName = "task")
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Fetch(FetchMode.SELECT)
     private List<Task> tasks;

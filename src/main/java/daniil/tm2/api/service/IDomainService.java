@@ -18,4 +18,5 @@ public interface IDomainService {
     
     Domain findByName(String name);
 
+    long count();
 }

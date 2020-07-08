@@ -2,6 +2,8 @@ package daniil.tm2.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +36,8 @@ public final class Domain implements Serializable {
     @Column(name = "NAME")
     private String name;
 
-    //@JacksonXmlElementWrapper(localName = "projects")
-    //@JacksonXmlProperty(localName = "project")
+    @JacksonXmlElementWrapper(localName = "projects")
+    @JacksonXmlProperty(localName = "project")
     @OneToMany(mappedBy = "domain", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Fetch(FetchMode.SELECT)
     private List<Project> projects = new ArrayList<>();

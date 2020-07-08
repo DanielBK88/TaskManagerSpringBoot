@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @NoArgsConstructor
 @Getter
@@ -46,6 +47,7 @@ public class TMUser {
      * The date when the user signed up to the system
      **/
     @Column(name = "DATE_JOINED")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate dateJoined;
 
     /**

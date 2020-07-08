@@ -95,4 +95,9 @@ public class DomainService implements IDomainService {
         return domainRepository.findById(name).orElse(null);
     }
 
+    @Override
+    public long count() {
+        return domainRepository.count();
+    }
+
 }
