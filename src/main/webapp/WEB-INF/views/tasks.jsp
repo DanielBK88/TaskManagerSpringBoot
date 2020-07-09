@@ -35,7 +35,7 @@
             <a href="/taskCreate"/>Новая задача</a>
         </p>
         <p>
-            <form style="padding-left:5%;" name="backForm" action="projects?domain=selectedDomain" method='POST'>
+            <form style="padding-left:5%;" name="backForm" action="projects?domain=${selectedDomain}" method='POST'>
             <input
                 name="backInput"
                 value="Назад"

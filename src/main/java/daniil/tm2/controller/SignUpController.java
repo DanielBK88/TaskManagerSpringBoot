@@ -1,6 +1,8 @@
 package daniil.tm2.controller;
 
 import daniil.tm2.api.service.IUserService;
+import java.util.Optional;
+import javax.swing.text.html.Option;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +23,15 @@ public class SignUpController {
             @RequestParam String password,
             @RequestParam String password_submit
             ) {
+        password = Optional.ofNullable(password)
+                .filter(pw -> !pw.isEmpty())
+                .orElseThrow(() -> new IllegalArgumentException("Null or empty password!"));
+        password_submit = Optional.ofNullable(password_submit)
+                .filter(pw -> !pw.isEmpty())
+                .orElseThrow(() -> new IllegalArgumentException("Null or empty password confirmation!"));
+        username = Optional.ofNullable(username)
+                .filter(n -> !n.isEmpty())
+                .orElseThrow(() -> new IllegalArgumentException("Null or empty user name!"));
         if (!password.equals(password_submit)) {
             return "redirect:/signup?error=Passwords do not match!";
         } else if (userService.addUser(username, password, "NORMAL_USER") == null) {

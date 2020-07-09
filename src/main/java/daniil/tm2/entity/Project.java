@@ -58,5 +58,10 @@ public final class Project implements Serializable {
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Fetch(FetchMode.SELECT)
     private List<Task> tasks;
-    
+
+    public Project(String name, Domain domain) {
+        this.name = name;
+        this.domain = domain;
+    }
+
 }

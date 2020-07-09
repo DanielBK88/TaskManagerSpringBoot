@@ -2,6 +2,7 @@ package daniil.tm2.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,7 +31,14 @@ public class LoginController {
             ) {
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("NORMAL_USER"));
-        Authentication authentication = new UsernamePasswordAuthenticationToken(username, password, authorities);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                Optional.ofNullable(username)
+                        .filter(name -> !name.isEmpty())
+                        .orElseThrow(() -> new IllegalArgumentException("Invalid user name!")),
+                Optional.ofNullable(password)
+                        .filter(pw -> !pw.isEmpty())
+                        .orElseThrow(() -> new IllegalArgumentException("Invalid password!")), 
+                authorities);
         try {
             authentication = authenticationManager.authenticate(authentication);
             SecurityContextHolder.getContext().setAuthentication(authentication);

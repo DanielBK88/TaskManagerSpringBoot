@@ -15,6 +15,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,6 +28,7 @@ import org.hibernate.annotations.FetchMode;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @Table(name = "TMNG_DOMAIN")
@@ -41,7 +43,11 @@ public final class Domain implements Serializable {
     @OneToMany(mappedBy = "domain", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Fetch(FetchMode.SELECT)
     private List<Project> projects = new ArrayList<>();
-    
+
+    public Domain(String name) {
+        this.name = name;
+    }
+
     /**
      * Get all tasks of all projects on this domain
      **/

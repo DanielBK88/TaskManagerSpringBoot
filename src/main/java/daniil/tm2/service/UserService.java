@@ -6,12 +6,15 @@ import daniil.tm2.api.service.IUserService;
 import daniil.tm2.entity.TMUser;
 import daniil.tm2.entity.role.UserRole;
 import java.time.LocalDate;
-import java.util.Collections;
+import java.util.Optional;
+import java.util.stream.Stream;
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @Transactional
@@ -34,23 +37,20 @@ public class UserService implements IUserService {
     
     @Override
     public TMUser addUser(String loginName, String password, String roleName) {
-        TMUser user = userRepository.findById(loginName).orElse(null);
-        if (user != null) {
-            return null;
-        }
-        UserRole role = roleRepository.findById(roleName).orElse(null);
-        if (role == null) {
-            role = new UserRole();
-            role.setName(roleName);
-            roleRepository.save(role);
-        }
-        user = new TMUser();
-        user.setDateJoined(LocalDate.now());
-        user.setName(loginName);
-        user.setPasswordHash(passwordEncoder.encode(password));
-        user.setRoles(Collections.singletonList(role));
-        userRepository.save(user);
-        return user;
+        return Optional.ofNullable(loginName)
+                .filter(n -> !n.isEmpty())
+                .filter(n -> !userRepository.findById(n).isPresent())
+                .flatMap(n -> Optional.of(userRepository.save(new TMUser(
+                        loginName,
+                        Optional.ofNullable(password).filter(pw -> !pw.isEmpty())
+                                .flatMap(pw -> Optional.of(passwordEncoder.encode(pw)))
+                                .orElseThrow(() -> new IllegalArgumentException("Null or empty password!")),
+                        Optional.ofNullable(roleName).filter(r -> !r.isEmpty())
+                                .flatMap(r -> Optional.of(new UserRole(r)))
+                                .flatMap(r -> Optional.of(Stream.of(r).collect(toList())))
+                                .orElseThrow(() -> new IllegalArgumentException("Null or empty role name!")),
+                        LocalDate.now()
+                )))).orElse(null);
     }
 
 }

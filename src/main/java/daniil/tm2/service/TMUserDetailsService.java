@@ -1,8 +1,8 @@
 package daniil.tm2.service;
 
 import daniil.tm2.api.repository.IUserRepository;
-import daniil.tm2.entity.TMUser;
 import daniil.tm2.entity.role.UserRole;
+import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -20,15 +20,15 @@ public class TMUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        TMUser user = userRepository.findById(userName).orElse(null);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found!");
-        }
-        return User.builder()
-                .username(user.getName())
-                .password(user.getPasswordHash())
-                .roles(user.getRoles().stream().map(UserRole::getName).toArray(String[]::new))
-                .build();
+        return Optional.ofNullable(userName)
+                .filter(n -> !n.isEmpty())
+                .flatMap(n -> userRepository.findById(n))
+                .flatMap(tmUser -> Optional.of(User.builder()
+                        .username(tmUser.getName())
+                        .password(tmUser.getPasswordHash())
+                        .roles(tmUser.getRoles().stream().map(UserRole::getName).toArray(String[]::new))
+                        .build())
+                ).orElseThrow(() -> new UsernameNotFoundException("Invalid user name or no such user!"));
     }
 
 }

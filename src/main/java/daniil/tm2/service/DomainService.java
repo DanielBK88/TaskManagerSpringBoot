@@ -9,9 +9,9 @@ import daniil.tm2.entity.Project;
 import daniil.tm2.entity.Task;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,28 +58,27 @@ public class DomainService implements IDomainService {
 
     @Override
     public void merge(Domain domain) {
-        if (domain == null) {
-            throw new IllegalArgumentException("The domain to merge is null!");
-        }
-        domainRepository.save(domain);
+        domainRepository.save(Optional.ofNullable(domain)
+                .orElseThrow(() -> new IllegalArgumentException("The domain to merge is null!")));
     }
 
     @Override
     public Domain createDomain(String name) {
-        if(StringUtils.isEmpty(name)) {
-            throw new IllegalArgumentException("Invalid name of domain to create!");
-        }
-        Domain domain = new Domain();
-        domain.setName(name);
-        return domainRepository.save(domain);
+        return domainRepository.save(        
+                Optional.ofNullable(name)
+                    .filter(n -> !n.isEmpty())
+                    .flatMap(n -> Optional.of(new Domain(n)))
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid name of domain to create!"))
+        );
     }
 
     @Override
     public void removeByName(String name) {
-        if(StringUtils.isEmpty(name)) {
-            throw new IllegalArgumentException("Invalid name of domain to remove!");
-        }
-        domainRepository.deleteById(name);
+        domainRepository.deleteById(
+                Optional.ofNullable(name)
+                        .filter(n -> !n.isEmpty())
+                        .orElseThrow(() -> new IllegalArgumentException("Invalid name of domain to remove!"))
+        );
     }
 
     @Override
@@ -89,10 +88,11 @@ public class DomainService implements IDomainService {
 
     @Override
     public Domain findByName(String name) {
-        if(StringUtils.isEmpty(name)) {
-            throw new IllegalArgumentException("Invalid name of domain to find!");
-        }
-        return domainRepository.findById(name).orElse(null);
+        return domainRepository.findById(
+                Optional.ofNullable(name)
+                        .filter(n -> !n.isEmpty())
+                        .orElseThrow(() -> new IllegalArgumentException("Invalid name of domain to find!"))
+        ).orElse(null);
     }
 
     @Override

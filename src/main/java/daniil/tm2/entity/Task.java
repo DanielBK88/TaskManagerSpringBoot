@@ -47,4 +47,9 @@ public final class Task implements Serializable {
         System.out.println("HELLO");
     }
 
+    public Task(String name, Project project) {
+        this.name = name;
+        this.project = project;
+    }
+
 }

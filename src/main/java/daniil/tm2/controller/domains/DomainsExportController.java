@@ -9,6 +9,7 @@ import daniil.tm2.entity.Domain;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -37,7 +38,9 @@ public class DomainsExportController {
         try {
             final ObjectMapper objectMapper = new XmlMapper();
             final ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
-            final String json = objectWriter.writeValueAsString(domain);
+            final String json = objectWriter.writeValueAsString(
+                    Optional.ofNullable(domain).orElseThrow(() -> new IllegalArgumentException("Domain is null!"))
+            );
             final byte[] data = json.getBytes("UTF-8");
             final File file = new File(DataConstant.FILE_XML);
             Files.write(file.toPath(), data);

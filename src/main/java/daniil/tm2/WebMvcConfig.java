@@ -71,6 +71,7 @@ public class WebMvcConfig extends WebSecurityConfigurerAdapter implements WebMvc
                 .and()
                 .formLogin()
                 .loginPage("/login").permitAll()
+                .failureForwardUrl("/start")
                 .and()
                 .csrf().disable();
     }

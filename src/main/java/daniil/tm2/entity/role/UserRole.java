@@ -42,6 +42,10 @@ public class UserRole {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "role", cascade = CascadeType.ALL)
     private Set<RolePermission> permissons;
 
+    public UserRole(String name) {
+        this.name = name;
+    }
+
     public UserRole(String name, Permission... permissions) {
         this.name = name;
         this.permissons = Arrays.stream(permissions)

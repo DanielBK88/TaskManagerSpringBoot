@@ -1,0 +1,62 @@
+<Domain>
+  <name>MAIN DOMAIN</name>
+  <projects>
+    <project>
+      <name>Project A</name>
+      <dateBegin/>
+      <dateEnd/>
+      <created>
+        <year>2020</year>
+        <month>JULY</month>
+        <chronology>
+          <id>ISO</id>
+          <calendarType>iso8601</calendarType>
+        </chronology>
+        <dayOfMonth>9</dayOfMonth>
+        <monthValue>7</monthValue>
+        <era>CE</era>
+        <dayOfWeek>THURSDAY</dayOfWeek>
+        <dayOfYear>191</dayOfYear>
+        <leapYear>true</leapYear>
+      </created>
+      <tasks>
+        <task>
+          <name>Task A1</name>
+          <dateBegin/>
+          <dateEnd/>
+        </task>
+        <task>
+          <name>Task A2</name>
+          <dateBegin/>
+          <dateEnd/>
+        </task>
+      </tasks>
+    </project>
+    <project>
+      <name>Project B</name>
+      <dateBegin/>
+      <dateEnd/>
+      <created>
+        <year>2020</year>
+        <month>JULY</month>
+        <chronology>
+          <id>ISO</id>
+          <calendarType>iso8601</calendarType>
+        </chronology>
+        <dayOfMonth>9</dayOfMonth>
+        <monthValue>7</monthValue>
+        <era>CE</era>
+        <dayOfWeek>THURSDAY</dayOfWeek>
+        <dayOfYear>191</dayOfYear>
+        <leapYear>true</leapYear>
+      </created>
+      <tasks>
+        <task>
+          <name>Task B1</name>
+          <dateBegin/>
+          <dateEnd/>
+        </task>
+      </tasks>
+    </project>
+  </projects>
+</Domain>
